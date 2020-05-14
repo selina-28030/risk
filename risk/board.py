@@ -111,6 +111,20 @@ class Board(object):
         Returns:
             bool: True if the input path is valid
         '''
+        if len(path) == 0:
+            return True
+        if len(path) == 1:
+            return True
+        if len(path) != len(np.unique(np.array(path))):
+            return False
+        
+        else:
+            for location, neighbor in list(zip(path,path[1:])):
+                loc_neighbor = risk.definitions.territory_neighbors[location]
+                if neighbor not in loc_neighbor:
+                    return False
+            return True
+                            
 
     
     def is_valid_attack_path(self, path):
