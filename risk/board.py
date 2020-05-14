@@ -120,8 +120,8 @@ class Board(object):
             return False
         
         else:
-            for location, neighbor in list(zip(path,path[1:])):
-                loc_neighbor = risk.definitions.territory_neighbors[location]
+            for territory, neighbor in list(zip(path,path[1:])):
+                loc_neighbor = risk.definitions.territory_neighbors[territory]
                 if neighbor not in loc_neighbor:
                     return False
             return True
@@ -145,6 +145,15 @@ class Board(object):
         Returns:
             bool: True if the path is an attack path
         '''
+        if len(path) < 2:
+            return False
+        if self.is_valid_path(path) is False:
+            return False
+        else:
+            for territory in path:
+                if territory != path[0] and self.owner(territory) == self.owner(path[0]):
+                    return False
+            return True
 
 
     def cost_of_attack_path(self, path):
