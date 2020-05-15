@@ -273,14 +273,14 @@ class Board(object):
             current_territory = q.get()
             current_territory_priority = current_territory[0]
             current_territory_id = current_territory[1]
-            if current_territory == target:
-                if current_territory == source:
+            if current_territory_id == target:
+                if current_territory_id == source:
                     return None
-                return short[current_territory]
-            loc_neighbor = risk.definitions.territory_neighbors[current_territory]
+                return short[current_territory_id]
+            loc_neighbor = risk.definitions.territory_neighbors[current_territory_id]
             for territory in loc_neighbor: 
                 if territory not in st and self.owner(source) != self.owner(territory):
-                    copy = deepcopy(short[current_territory])
+                    copy = deepcopy(short[current_territory_id])
                     copy.append(territory)
                     pr = current_territory_priority + self.armies(territory)
                     if territory not in q:
