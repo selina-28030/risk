@@ -193,23 +193,22 @@ class Board(object):
         short = {}
         short[source] = [source]
         q = deque()
-        q.appendleft(source)
+        q.append(source)
         st = set()
         st.add(source)
         
-        while len(q) > 0:
-            current_territory = q.pop()
+        while q:
+            current_territory = q.popleft()
             if current_territory == target:
                 return short[current_territory]
             loc_neighbor = risk.definitions.territory_neighbors[current_territory]
             for territory in loc_neighbor: 
                 if territory not in st:
-                    copy = short[current_territory]
+                    copy = deepcopy(short[current_territory])
                     copy.append(territory)
                     short[territory] = copy
-                    q.appendleft(territory)
-                    st.add(current_territory)
-
+                    q.append(territory)
+                st.add(current_territory)
 
     def can_fortify(self, source, target):
         '''
