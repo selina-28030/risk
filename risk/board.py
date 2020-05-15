@@ -230,6 +230,7 @@ class Board(object):
         q.append(source)
         st = set()
         st.add(source)
+        valid = False
         
         while q:
             current_territory = q.popleft()
