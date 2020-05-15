@@ -202,7 +202,7 @@ class Board(object):
                 return short[current_territory]
             loc_neighbor = risk.definitions.territory_neighbors[current_territory]
             for territory in loc_neighbor: 
-                if not in st:
+                if territory not in st:
                     copy = short[current_territory]
                     copy.append(territory)
                     short[territory] = copy
