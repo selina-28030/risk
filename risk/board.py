@@ -189,6 +189,23 @@ class Board(object):
         Returns:
             [int]: a valid path between source and target that has minimum length; this path is guaranteed to exist
         '''
+        Create a dictionary whose keys are territories and values are path
+        Set dictionary[source] = [source]
+        Create a queue
+        Enqueue source onto the queue
+        Create a set of visited territories
+        Add source to the set
+
+        While the queue is not empty
+            Dequeue current_territory from the queue
+            If current_territory is the target
+                return the dictionary[current_territory]
+            For each territory in the neighbors of current_territory that is not in the visited set
+                Make a copy of dictionary[current_territory]
+                Push territory onto the copy
+                Set dictionary[territory] = copy
+                Enqueue territory
+            Add current_territory to the visited set
 
 
     def can_fortify(self, source, target):
