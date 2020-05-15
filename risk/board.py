@@ -3,6 +3,7 @@ import random
 import numpy as np
 from collections import namedtuple
 from collections import deque
+from copy import deepcopy
 
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
