@@ -287,7 +287,7 @@ class Board(object):
                         short[territory] = copy
                         q.put((pr, territory))
                     else:
-                        if pr < q.get()[0]:
+                        if pr < current_territory_priority:
                             short[territory] = pr
                             q.put((pr, territory))
                 st.add(territory)
