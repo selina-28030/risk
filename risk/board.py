@@ -4,7 +4,7 @@ import numpy as np
 from collections import namedtuple
 from collections import deque
 from copy import deepcopy
-import heapq
+from queue import PriorityQueue
 
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
@@ -264,39 +264,32 @@ class Board(object):
         '''
         short = {}
         short[source] = [source]
-        q = []
-        heapq.heappush(q, (0, source))
+        q = PriorityQueue()
+        q.put((0, source))
         st = set()
         st.add(source)
         
         while q:
-            current_territory = heapq.heappop(q)
+            current_territory = q.get()[1]
             if current_territory == target:
+                if current_territory == source:
+                    return None
                 return short[current_territory]
             loc_neighbor = risk.definitions.territory_neighbors[current_territory]
             for territory in loc_neighbor: 
-                if territory not in st:
+                if territory not in st and self.owner(source) != self.owner(territory):
                     copy = deepcopy(short[current_territory])
                     copy.append(territory)
-                    pr = 
-                    short[territory] = copy
-                    q.append(territory)
+                    val = q.get()[0]
+                    pr = val + self.armies(territory)
+                    if territory not in q:
+                        short[territory] = copy
+                        q.put((pr, territory))
+                    else:
+                        if pr < val:
+                            short[territory] = pr
+                            q.put((pr, territory))
                 st.add(territory)
-                    
-            
-
-
-            For each territory in the neighbors of current_territory that is not in the visited set
-                Make a copy of dictionary[current_territory]
-                Push territory onto the copy
-    ++          CALCULATE THE PRIORITY OF THE PATH AS PRIORITY OF CURRENT_TERRITORY + NUMBER OF ARMIES ON TERRITORY
-    ++          IF TERRITORY NOT IN THE PRIORITY QUEUE
-                    Set dictionary[current_territory] = copy + territory
-    ++              Enqueue territory WITH PRIORITY 
-    ++          ELSE, IF THE NEW PRIORITY IS LESS THEN THE PRIORITY IN THE QUEUE
-                    Set dictionary[current_territory] = copy + territory
-    ++              UPDATE THE TERRITORY'S PRIORITY IN THE PRIORITY QUEUE WITH THE NEW PRIORITY
-            Add current_territory to the visited set
 
 
     def can_attack(self, source, target):
