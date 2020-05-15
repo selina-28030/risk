@@ -283,7 +283,7 @@ class Board(object):
                     copy = deepcopy(short[current_territory_id])
                     copy.append(territory)
                     pr = current_territory_priority + self.armies(territory)
-                    if territory not in q:
+                    if territory not in q.queue:
                         short[territory] = copy
                         q.put((pr, territory))
                     else:
