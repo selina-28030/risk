@@ -300,6 +300,36 @@ class Board(object):
         Returns:
             bool: True if a valid attack path exists between source and target; else False
         '''
+        short = {}
+        short[source] = [source]
+        q = heapdict.heapdict()
+        q[source] = 0
+        st = set()
+        st.add(source)
+        valid = False
+        
+        while q:
+            current_territory, priority = q.popitem()
+            if current_territory == target:
+                if current_territory == source:
+                    return None
+                valid = True
+            loc_neighbor = risk.definitions.territory_neighbors[current_territory]
+            for territory in loc_neighbor: 
+                if territory not in st and self.owner(source) != self.owner(territory):
+                    copy = deepcopy(short[current_territory])
+                    copy.append(territory)
+                    pr = priority + self.armies(territory)
+                    if territory not in q:
+                        short[territory] = copy
+                        q[territory] = pr
+                    else:
+                        if pr < q[territory]:
+                            short[territory] = copy
+                            q[territory] = pr
+                st.add(territory)
+                
+        return valid
 
 
     # ======================= #
