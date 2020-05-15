@@ -270,7 +270,9 @@ class Board(object):
         st.add(source)
         
         while q:
-            current_territory = q.get()[1]
+            current_territory = q.get()
+            current_territory_priority = current_territory[0]
+            current_territory_id = current_territory[1]
             if current_territory == target:
                 if current_territory == source:
                     return None
@@ -280,13 +282,12 @@ class Board(object):
                 if territory not in st and self.owner(source) != self.owner(territory):
                     copy = deepcopy(short[current_territory])
                     copy.append(territory)
-                    val = q.get()[0]
-                    pr = val + self.armies(territory)
+                    pr = current_territory_priority + self.armies(territory)
                     if territory not in q:
                         short[territory] = copy
                         q.put((pr, territory))
                     else:
-                        if pr < val:
+                        if pr < q.get()[0]:
                             short[territory] = pr
                             q.put((pr, territory))
                 st.add(territory)
