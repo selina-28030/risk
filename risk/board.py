@@ -237,7 +237,7 @@ class Board(object):
                 valid = True 
             loc_neighbor = risk.definitions.territory_neighbors[current_territory]
             for territory in loc_neighbor: 
-                if territory not in st and player_id == self.owner(territory):
+                if territory not in st and self.owner(source) == self.owner(territory):
                     copy = deepcopy(short[current_territory])
                     copy.append(territory)
                     short[territory] = copy
