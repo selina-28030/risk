@@ -224,6 +224,27 @@ class Board(object):
         Returns:
             bool: True if reinforcing the target from the source territory is a valid move
         '''
+        short = {}
+        short[source] = [source]
+        q = deque()
+        q.append(source)
+        st = set()
+        st.add(source)
+        
+        while q:
+            current_territory = q.popleft()
+            if current_territory == target:
+                return valid = True 
+            loc_neighbor = risk.definitions.territory_neighbors[current_territory]
+            for territory in loc_neighbor: 
+                if territory not in st and player_id == self.owner(territory):
+                    copy = deepcopy(short[current_territory])
+                    copy.append(territory)
+                    short[territory] = copy
+                    q.append(territory)
+                st.add(territory)
+                
+        return valid
 
 
     def cheapest_attack_path(self, source, target):
