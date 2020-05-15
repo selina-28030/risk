@@ -4,7 +4,7 @@ import numpy as np
 from collections import namedtuple
 from collections import deque
 from copy import deepcopy
-from queue import PriorityQueue
+import heapdict
 
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
@@ -264,32 +264,30 @@ class Board(object):
         '''
         short = {}
         short[source] = [source]
-        q = PriorityQueue()
-        q.put((0, source))
+        q = heapdict.heapdict()
+        q[source] = 0
         st = set()
         st.add(source)
         
         while q:
-            current_territory = q.get()
-            current_territory_priority = current_territory[0]
-            current_territory_id = current_territory[1]
-            if current_territory_id == target:
-                if current_territory_id == source:
+            current_territory, priority = q.popitem()
+            if current_territory == target:
+                if current_territory == source:
                     return None
-                return short[current_territory_id]
+                return short[current_territory]
             loc_neighbor = risk.definitions.territory_neighbors[current_territory_id]
             for territory in loc_neighbor: 
                 if territory not in st and self.owner(source) != self.owner(territory):
                     copy = deepcopy(short[current_territory_id])
                     copy.append(territory)
-                    pr = current_territory_priority + self.armies(territory)
-                    if territory not in q.queue:
+                    pr = priority + self.armies(territory)
+                    if territory not in q:
                         short[territory] = copy
-                        q.put((pr, territory))
+                        q[territory] = pr
                     else:
-                        if pr < current_territory_priority:
-                            short[territory] = pr
-                            q.put((pr, territory))
+                        if pr < q[territory]:
+                            short[territory] = copy
+                            q[territory] = pr
                 st.add(territory)
 
 
