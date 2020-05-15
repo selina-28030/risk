@@ -208,7 +208,7 @@ class Board(object):
                     copy.append(territory)
                     short[territory] = copy
                     q.appendleft(territory)
-            st.add(current_territory)
+                    st.add(current_territory)
 
 
     def can_fortify(self, source, target):
