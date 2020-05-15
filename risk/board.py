@@ -234,7 +234,7 @@ class Board(object):
         while q:
             current_territory = q.popleft()
             if current_territory == target:
-                return valid = True 
+                valid = True 
             loc_neighbor = risk.definitions.territory_neighbors[current_territory]
             for territory in loc_neighbor: 
                 if territory not in st and player_id == self.owner(territory):
